@@ -23,7 +23,7 @@
 
 | Переменная                  | Описание                                                                 | Значение по умолчанию                     |
 |-----------------------------|-------------------------------------------------------------------------|-------------------------------------------|
-| `docker_image_path`         | Путь к Docker-образу на локальной машине.                               | `{{ playbook_dir }}/roles/lm_chz_docker/files/regime_1.1.0-243-ubuntu22_amd64.tgz` |
+| `docker_image_path`         | Путь к Docker-образу на локальной машине. (Обционально)                              | `{{ playbook_dir }}/roles/lm_chz_docker/files/regime_1.1.0-243-ubuntu22_amd64.tgz` |
 | `config_dir`                | Каталог для хранения файла конфигурации `ext.ini`.                      | `/opt/lm_chz/config`                      |
 | `data_dir`                  | Каталог для хранения файлов БД ЛМ ЧЗ.                                   | `/opt/lm_chz/data`                        |
 | `log_dir`                   | Каталог для хранения логов ЛМ ЧЗ.                                       | `/opt/lm_chz/log`                         |
@@ -131,4 +131,4 @@ project/
 
 ## Обратная связь
 
-Если у вас есть вопросы или предложения, создайте [issue](https://github.com/your-repository/lm_chz_docker/issues) в репозитории.
+Если у вас есть вопросы или предложения, создайте [issue](https://github.com/drumspb/lm_chz_docker/issues) в репозитории.

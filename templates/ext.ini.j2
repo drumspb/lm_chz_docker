@@ -1,0 +1,12 @@
+[api]
+login = {{ lm_chz_config.api.login }}
+password = {{ lm_chz_config.api.password }}
+
+[remote]
+service_url = {{ lm_chz_config.remote.service_url }}
+{% if lm_chz_config.remote.proxy_host is defined and lm_chz_config.remote.proxy_host %}
+proxy_host = {{ lm_chz_config.remote.proxy_host }}
+proxy_port = {{ lm_chz_config.remote.proxy_port }}
+proxy_user = {{ lm_chz_config.remote.proxy_user }}
+proxy_password = {{ lm_chz_config.remote.proxy_password }}
+{% endif %}

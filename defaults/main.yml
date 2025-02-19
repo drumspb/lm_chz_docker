@@ -1,0 +1,25 @@
+# Путь к Docker-образу
+docker_image_path: "{{ playbook_dir }}/roles/lm_chz_docker/files/regime_ubuntu22_amd64.tar"
+
+# Каталоги для конфигурации, данных и логов
+config_dir: "/opt/lm_chz/config"
+data_dir: "/opt/lm_chz/data"
+log_dir: "/opt/lm_chz/log"
+
+# Параметры для файла конфигурации ext.ini
+lm_chz_config:
+  api:
+    login: "admin"
+    password: "admin"
+  remote:
+    service_url: "https://suzrsapi.sandbox.crptech.ru"
+    proxy_host: ""
+    proxy_port: ""
+    proxy_user: ""
+    proxy_password: ""
+
+# Порт для ЛМ ЧЗ
+lm_chz_port: 5995
+
+# Имя контейнера
+container_name: "lm_chz_container"

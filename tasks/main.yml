@@ -1,0 +1,62 @@
+---
+# - name: Убедиться, что Docker установлен
+#   apt:
+#     name: docker.io
+#     state: present
+#   when: ansible_os_family == "Debian"
+
+# - name: Убедиться, что Docker установлен (для CentOS)
+#   yum:
+#     name: docker
+#     state: present
+#   when: ansible_os_family == "RedHat"
+
+# - name: Запустить и включить Docker
+#   service:
+#     name: docker
+#     state: started
+#     enabled: yes
+
+- name: Создать каталоги для конфигурации, данных и логов
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  loop:
+    - "{{ config_dir }}"
+    - "{{ data_dir }}"
+    - "{{ log_dir }}"
+
+- name: Копировать Docker-образ на целевую машину
+  copy:
+    src: "{{ docker_image_path }}"
+    dest: "/tmp/regime_ubuntu22_amd64.tar"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Загрузить Docker-образ
+  command: docker load -i /tmp/regime_ubuntu22_amd64.tar
+
+- name: Создать файл конфигурации ext.ini
+  template:
+    src: ext.ini.j2
+    dest: "{{ config_dir }}/ext.ini"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Запустить контейнер ЛМ ЧЗ
+  docker_container:
+    name: "{{ container_name }}"
+    image: "registry.equiron.com/regime:1.1.0-270-ubuntu22_amd64"
+    state: started
+    volumes:
+      - "{{ config_dir }}:/opt/regime/etc"
+      - "{{ data_dir }}:/opt/yenisei/data"
+      - "{{ log_dir }}:/var/log/regime"
+    ports:
+      - "{{ lm_chz_port }}:5995"
+    restart_policy: always

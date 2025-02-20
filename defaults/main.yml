@@ -2,9 +2,9 @@
 docker_image_path: "{{ playbook_dir }}/roles/lm_chz_docker/files/regime_ubuntu22_amd64.tar"
 
 # Каталоги для конфигурации, данных и логов
-config_dir: "/opt/lm_chz/config"
-data_dir: "/opt/lm_chz/data"
-log_dir: "/opt/lm_chz/log"
+config_dir: "/opt/regime/config"
+data_dir: "/opt/regime/data"
+log_dir: "/opt/regime/log"
 
 # Параметры для файла конфигурации ext.ini
 lm_chz_config:

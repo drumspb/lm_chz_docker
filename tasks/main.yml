@@ -29,16 +29,34 @@
     - "{{ data_dir }}"
     - "{{ log_dir }}"
 
-- name: Копировать Docker-образ на целевую машину
-  copy:
-    src: "{{ docker_image_path }}"
-    dest: "/tmp/regime_ubuntu22_amd64.tar"
-    owner: root
-    group: root
+# - name: Копировать Docker-образ на целевую машину
+#   copy:
+#     src: "{{ docker_image_path }}"
+#     dest: "/tmp/regime_ubuntu22_amd64.tar"
+#     owner: root
+#     group: root
+#     mode: '0644'
+
+- name: Загрузить файл regime_ubuntu22_amd64.tar в /tmp
+  get_url:
+    url: "https://xn--80ajghhoc2aj1c8b.xn--p1ai/upload/regime_1.2.0-326-ubuntu22_amd64.tgz"
+    dest: "/tmp/regime_1.2.0-326-ubuntu22_amd64.tgz"
     mode: '0644'
+    timeout: 300
+
 
 - name: Загрузить Docker-образ
-  command: docker load -i /tmp/regime_ubuntu22_amd64.tar
+  command: docker load -i /tmp/regime_1.2.0-326-ubuntu22_amd64.tgz
+
+- name: Создать директории
+  ansible.builtin.file:
+    path:
+      - "{{ config_dir }}"
+      - "{{ data_dir }}"
+      - "{{ log_dir }}"
+    state: directory
+    mode: '0755'
+
 
 - name: Создать файл конфигурации ext.ini
   template:
@@ -51,12 +69,12 @@
 - name: Запустить контейнер ЛМ ЧЗ
   docker_container:
     name: "{{ container_name }}"
-    image: "registry.equiron.com/regime:1.1.0-270-ubuntu22_amd64"
+    image: "registry.equiron.com/regime:1.2.0-326-ubuntu22_amd64"
     state: started
     volumes:
-      - "{{ config_dir }}:/opt/regime/etc"
-      - "{{ data_dir }}:/opt/yenisei/data"
-      - "{{ log_dir }}:/var/log/regime"
+      - "{{ config_dir }}:/opt/regime/etc:Z"
+      - "{{ data_dir }}:/opt/yenisei/data:Z"
+      # - "{{ log_dir }}:/var/log/regime:Z"
     ports:
       - "{{ lm_chz_port }}:5995"
     restart_policy: always
